@@ -1,5 +1,5 @@
 # Pilha
 
-Disciplina:         Estrutura de dados
-Tipo de estrutura:  Pilha
-Autor:              Gustavo Laires Albuquerque Costa
+Disciplina:         Estrutura de dados <br/>
+Tipo de estrutura:  Pilha <br/>
+Autor:              Gustavo Laires Albuquerque Costa <br/>
