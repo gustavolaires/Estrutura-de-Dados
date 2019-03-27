@@ -23,7 +23,7 @@ public class VectorArray implements VectorArrayInterface {
 	 * @ return Object
 	 */
 	public Object elemAtRank(Integer p) throws VectorArrayException{
-		if(p > this.size() || p < 0) {
+		if(p > this.size()-1 || p < 0) {
 			throw new VectorArrayException();
 		}
 		
@@ -38,7 +38,7 @@ public class VectorArray implements VectorArrayInterface {
 	 * @ return Object
 	 */
 	public Object replaceAtRank(Integer p, Object o) throws VectorArrayException{
-		if(p > this.size() || p < 0) {
+		if(p > this.size()-1 || p < 0) {
 			throw new VectorArrayException();
 		}
 		
@@ -63,17 +63,17 @@ public class VectorArray implements VectorArrayInterface {
 		if( this.size() == this.elements.length) {
 			Object [] tmp = new Object[2*this.elements.length];
 			
-			for(int i = this.size()-1; i>p; i--) {
+			for(int i = this.size()-1; i>=p; i--) {
 				tmp[i+1] = this.elements[i];
 			}
-			for(int i = p-1; i<=0; i--) {
+			for(int i = p-1; i>=0; i--) {
 				tmp[i] = this.elements[i];
 			}
 			
 			this.elements = tmp;
 		}
 		else {
-			for(int i = this.size()-1; i>p; i--) {
+			for(int i = this.size()-1; i>=p; i--) {
 				this.elements[i+1] = this.elements[i];
 			}
 		}
@@ -90,7 +90,7 @@ public class VectorArray implements VectorArrayInterface {
 	 * @ return Object
 	 */
 	public Object removeAtRank(Integer p) throws VectorArrayException{
-		if(p > this.size() || p < 0) {
+		if(p > this.size()-1 || p < 0) {
 			throw new VectorArrayException();
 		}
 		
@@ -100,6 +100,7 @@ public class VectorArray implements VectorArrayInterface {
 			this.elements[i] = this.elements[i+1];
 		}
 		
+		this.size -= 1;
 		return tmp;
 	}
 	
