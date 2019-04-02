@@ -1,5 +1,5 @@
 # Sequencia
 
-Disciplina: Estrutura de dados
-Tipo de estrutura: Sequencia
+Disciplina: Estrutura de dados <\br>
+Tipo de estrutura: Sequencia <\br>
 Autor: Gustavo Laires Albuquerque Costa
