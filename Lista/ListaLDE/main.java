@@ -9,6 +9,8 @@ public class main {
 		ListaLDE lista = new ListaLDE();
 		NoDE n = null;
 		NoDE q = null;
+		NoDE l = null;
+		Object tmp = null;
 		String r = "";
 		String o = "";
 		
@@ -21,20 +23,24 @@ public class main {
 					"[5]  insertFirst\n"+
 					"[6]  insertLast\n"+
 					"[7]  remove\n"+
+					"------- N -------\n"+
 					"[8]  first\n"+
 					"[9]  last\n"+
 					"[10]  after\n"+
 					"[11]  before\n"+
+					"-----------------\n"+
 					"[12]  isFirst\n"+
 					"[13]  isLast\n"+
 					"[14]  size\n"+
 					"[15]  isEmpty\n"+
 					"[16]  MONTAR LISTA\n"+
 					"[17]  INFORMAR OBJETO\n"+
-					"[18]  first q\n"+
-					"[19]  last q\n"+
-					"[20]  after q\n"+
-					"[21]  before q\n"+
+					"------- Q -------\n"+
+					"[18]  first\n"+
+					"[19]  last\n"+
+					"[20]  after\n"+
+					"[21]  before\n"+
+					"-----------------\n"+
 					"[0]  Sair\n"+
 					"Menu: "
 					);
@@ -43,76 +49,61 @@ public class main {
 			
 			switch (r){
 				case "1":
-					if(lista.replaceElement(n, o)) {
-						System.out.println("Elemento substituido!\n");
-					}
-					else {
-						System.out.println("Erro no replaceElement\n");
-					}
+					lista.replaceElement(n, o);
+					System.out.println("Elemento substituido!\n");
 					break;
 				case "2":
-					if(lista.swapElements(n, q)) {
-						System.out.println("Elementos trocados!\n");
-					}
-					else {
-						System.out.println("Erro no swapElements\n");
-					}
+					lista.swapElements(n, q);
+					System.out.println("Elementos trocados!\n");
 					break;
 				case "3":
-					if(lista.insertAfter(n, o)) {
-						System.out.println("No n inserido!\n");
-					}
-					else {
-						System.out.println("Erro no insertAfter\n");
-					}
+					lista.insertAfter(n, o);
+					System.out.println("Objeto O inserido depois do No N inserido!\n");
 					break;
 				case "4":
-					if(lista.insertBefore(n, o)) {
-						System.out.println("No n inserido!\n");
-					}
-					else {
-						System.out.println("Erro no insertBefore\n");
-					}
+					lista.insertBefore(n, o);
+					System.out.println("Objeto O inserido antes do No N inserido!\n");
 					break;
 				case "5":
 					lista.insertFirst(o);
-					System.out.println("Elemento inserido!\n");
+					System.out.println("Object O inserido no começo da lista!\n");
 					break;
 				case "6":
 					lista.insertLast(o);
-					System.out.println("Elemento inserido!\n");
+					System.out.println("Object O inserido no fim da lista!\n");
 					break;
 				case "7":
-					n = lista.remove(n);
-					if(n != null) {
-						System.out.println("Elemento " + n.getElement() + " removido");
-					}
-					else {
-						System.out.println("Erro no remove\n");
-					}
+					tmp = lista.remove(n);
+					System.out.println("Elemento " + tmp + " removido\n");
 					break;
 				case "8":
 					n = lista.first();
-					if(n == null) {
+					if(n == lista.last().getNxtNo()) {
 						System.out.println("Lista vazia\n");
+					}
+					else {
+						System.out.println("Elemento " + n.getElement() + " selecionado!\n");
 					}
 					break;
 				case "9":
 					n = lista.last();
-					if(n == null) {
+					if(n == lista.first().getPrevNo()) {
 						System.out.println("Lista vazia\n");
+					}
+					else {
+						System.out.println("Elemento " + n.getElement() + " selecionado!\n");
 					}
 					break;
 				case "10":
 					n = lista.after(n);
-					if(n == null) {
-						System.out.println("n vazio\n");
+					if(n == lista.last().getNxtNo()) {
+						System.out.println("N eh Trailer\n");
 					}
 					break;
 				case "11":
 					n = lista.before(n);
-					if(n == null) {
-						System.out.println("n vazio\n");
+					if(n == lista.first().getPrevNo()) {
+						System.out.println("N eh Header\n");
 					}
 					break;
 				case "12":
@@ -144,11 +135,11 @@ public class main {
 					}
 					break;
 				case "16":
-					n = lista.first();
-					if(n != null) {
-						while(n.getElement() != null) {
-							System.out.print(n.getElement()+" ");
-							n = n.getNxtNo();
+					l = lista.first();
+					if(l != null) {
+						while(l.getElement() != null) {
+							System.out.print(l.getElement()+" ");
+							l = l.getNxtNo();
 						}
 						System.out.println("\n");
 					}
@@ -160,26 +151,32 @@ public class main {
 					break;
 				case "18":
 					q = lista.first();
-					if(n == null) {
+					if(q == lista.last().getNxtNo()) {
 						System.out.println("Lista vazia\n");
+					}
+					else {
+						System.out.println("Elemento " + q.getElement() + " selecionado!\n");
 					}
 					break;
 				case "19":
 					q = lista.last();
-					if(n == null) {
+					if(q == lista.first().getPrevNo()) {
 						System.out.println("Lista vazia\n");
+					}
+					else {
+						System.out.println("Elemento " + q.getElement() + " selecionado!\n");
 					}
 					break;
 				case "20":
 					q = lista.after(q);
-					if(n == null) {
-						System.out.println("n vazio\n");
+					if(q == lista.last().getNxtNo()) {
+						System.out.println("Q eh Trailer\n");
 					}
 					break;
 				case "21":
 					q = lista.before(q);
-					if(n == null) {
-						System.out.println("n vazio\n");
+					if(q == lista.first().getPrevNo()) {
+						System.out.println("Q eh Header\n");
 					}
 					break;
 				default:
