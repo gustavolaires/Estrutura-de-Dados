@@ -1,4 +1,4 @@
-Sequencia
+# Sequencia
 
 Disciplina: Estrutura de dados
 Tipo de estrutura: Sequencia
