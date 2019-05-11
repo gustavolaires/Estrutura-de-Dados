@@ -64,9 +64,13 @@ public class HashMapLSE {
 				//pega o ultimo elemento da lista encadeada.
 				tmp = tmp.getNxt();
 			}
+			tmp.setNxt(novoNo);
+		}
+		else {
+			this.vetor[key] = novoNo;
 		}
 		
-		tmp.setNxt(novoNo);
+
 		this.size += 1;
 	}
 	
@@ -83,7 +87,11 @@ public class HashMapLSE {
 				n.setNxt( tmp.getNxt());
 				tmp.setNxt(null);
 			}
+			else {
+				n = null;
+			}
 			
+			this.size -= 1;
 			return rtn;
 		}catch(NoSuchKeyException e){
 			throw new NoSuchKeyException();
@@ -184,12 +192,22 @@ public class HashMapLSE {
 		No antigoVetor[] = this.vetor;
 		
 		this.vetor = novoVetor;
+		this.size = 0;
+		this.fatorP = newSize;
+		
+		No tmp, tmpNxt;
 		
 		for(int i=0; i<antigoVetor.length; i++) {
-			this.insertItem(antigoVetor[i].getKey(), antigoVetor[i].getElement());
+			tmp = antigoVetor[i];
+			while(tmp != null) {
+				this.insertItem(tmp.getKey(), tmp.getElement());
+				tmpNxt = tmp.getNxt();
+				tmp.setNxt(null);
+				tmp = tmpNxt;
+			}
 			antigoVetor[i] = null;
 		}
 		
-		this.fatorP = newSize;
+		
 	}
 }

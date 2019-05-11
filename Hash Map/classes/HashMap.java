@@ -253,12 +253,12 @@ public class HashMap {
 		No antigoVetor[] = this.vetor;
 		
 		this.vetor = new No[newSize];
+		this.size = 0;
 		this.fatorS = this.fatorP;
 		this.fatorP = newSize;
 		
 		for(int i=0; i<antigoVetor.length; i++) {
 			this.insertItem(antigoVetor[i].getKey(), antigoVetor[i].getElement());
-			System.out.println(antigoVetor[i].getKey() + " ");
 			antigoVetor[i] = null;
 		}
 	}
