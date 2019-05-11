@@ -246,38 +246,6 @@ public class main {
 				}
 			}
 		}
-		
-		/*
-		
-		No nos[] = hm.getVetor();
-		
-		for(int s=0; s<nos.length; s++) {
-			if(nos[s] == null) {
-				System.out.print("NULL ");
-			}
-			else if(nos[s].isAvailable()) {
-				System.out.print("Avail ");
-			}
-			else {
-				System.out.print(nos[s].getKey() + " ");
-			}
-		}
-		
-		
-		nos = hm.getVetor();
-		
-		for(int s=0; s<nos.length; s++) {
-			if(nos[s] == null) {
-				System.out.print("NULL ");
-			}
-			else if(nos[s].isAvailable()) {
-				System.out.print("Avail ");
-			}
-			else {
-				System.out.print(nos[s].getKey() + " ");
-			}
-		}
-		*/
 	}
 	
 	public static void menu1() {
