@@ -18,8 +18,8 @@ public class HashMap {
 	
 	// <CONSTRUTORES>
 	public HashMap() {
-		this.fatorP = 3;
-		this.fatorS = 2;
+		this.fatorP = 13;
+		this.fatorS = 7;
 		
 		this.vetor = new No[this.fatorP];
 		
@@ -152,6 +152,7 @@ public class HashMap {
 		try {
 			No n = this.findElement(k);
 			n.setAvailable(true);
+			this.size -= 1;
 			return n;
 		}catch(NoSuchKeyException e){
 			throw new NoSuchKeyException();
@@ -258,8 +259,11 @@ public class HashMap {
 		this.fatorP = newSize;
 		
 		for(int i=0; i<antigoVetor.length; i++) {
-			this.insertItem(antigoVetor[i].getKey(), antigoVetor[i].getElement());
-			antigoVetor[i] = null;
+			if(antigoVetor[i] != null) {
+				this.insertItem(antigoVetor[i].getKey(), antigoVetor[i].getElement());
+				antigoVetor[i] = null;
+			}
+			
 		}
 	}
 }
