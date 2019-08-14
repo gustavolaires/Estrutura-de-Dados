@@ -276,7 +276,7 @@ public class ArvoreAVL implements ArvoreAVLInterface{
 			n = tmpList.get(i);
 			h = this.depth(n);
 			
-			arvore[h][i] = String.valueOf( n.getElemento()); //+ ":" + String.valueOf( n.getBalanceFactor());
+			arvore[h][i] = String.valueOf( n.getElemento()) + ":" + String.valueOf( n.getBalanceFactor());
 		}
 		
 		for(int i=0; i<height+1; i++) {
@@ -481,6 +481,9 @@ public class ArvoreAVL implements ArvoreAVLInterface{
 			
 			if(selectRmv != null) {
 				this.chooseRotation(selectRmv);
+				
+				selectRmv = selectRmv.getPai(); // TESTE
+				
 				if( !this.checkBF(selectRmv, -1)) {
 					selectRmv = null;
 				}
@@ -688,6 +691,7 @@ public class ArvoreAVL implements ArvoreAVLInterface{
 		 *   1: Right
 		 */
 		n.setBalanceFactor(n.getBalanceFactor() + (op*side*(-1)) );
+		System.out.println(n.getElemento() + " + " + String.valueOf(side) + " : " + String.valueOf(op) ); //imprimir
 		if(op == 1) {
 			//increment
 			if(checkBF( n, op)) {
