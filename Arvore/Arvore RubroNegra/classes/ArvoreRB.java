@@ -257,7 +257,18 @@ public class ArvoreRB implements ArvoreRBInterface{
 			n = tmpList.get(i);
 			h = this.depth(n);
 			
-			arvore[h][i] = String.valueOf( n.getElemento()) + "-" + n.getCorLetter();
+			String dn = "";
+			if(n.getDuploNegro() == -1) {
+				dn = "DN-L";
+			}
+			else if(n.getDuploNegro() == 1) {
+				dn = "DN-D";
+			}
+			else {
+				dn = "";
+			}
+			
+			arvore[h][i] = String.valueOf( n.getElemento()) + "-" + n.getCorLetter() + " " + dn;
 		}
 		
 		for(int i=0; i<height+1; i++) {
@@ -348,13 +359,23 @@ public class ArvoreRB implements ArvoreRBInterface{
 				this.root = null;
 			}
 			else {
+				//atualizar arvore removacao
+				attTreeRemove(n, null);
+				
 				if( n.getPai().getFilhoEsquerdo() == n ) {
 					n.getPai().setFilhoEsquerdo(null);
 				}
 				else {
 					n.getPai().setFilhoDireito(null);
 				}
+				
+				//captura do pai
+				NoRB pai = n.getPai();
+				
 				n.setPai(null);
+				
+				//rebalaceamento da arvore
+				rebalanceTreeRemove(pai);
 			}
 		}
 		// possui 2 filhos
@@ -373,10 +394,18 @@ public class ArvoreRB implements ArvoreRBInterface{
 		else {
 			if( this.isRoot(n)) {
 				if( this.hasLeftChild(n)) {
+					//atualizar arvore removacao
+					attTreeRemove(n, n.getFilhoEsquerdo());
+					
 					this.root = n.getFilhoEsquerdo();
+					n.setFilhoEsquerdo(null);
 				}
 				else {
+					//atualizar arvore removacao
+					attTreeRemove(n, n.getFilhoDireito());
+					
 					this.root = n.getFilhoDireito();
+					n.setFilhoDireito(null);
 				}
 				this.root.setPai(null);
 			}
@@ -391,6 +420,10 @@ public class ArvoreRB implements ArvoreRBInterface{
 						n.getFilhoEsquerdo().setPai(n.getPai());
 						
 					}
+					
+					//atualizar arvore removacao
+					attTreeRemove(n, n.getFilhoEsquerdo());
+					
 					n.setFilhoEsquerdo(null);
 				}
 				else {
@@ -401,11 +434,21 @@ public class ArvoreRB implements ArvoreRBInterface{
 					else {
 						n.getPai().setFilhoDireito(n.getFilhoDireito());
 						n.getFilhoDireito().setPai(n.getPai());
-						
 					}
+					
+					//atualizar arvore removacao
+					attTreeRemove(n, n.getFilhoDireito());
+					
 					n.setFilhoDireito(null);
 				}
+				
+				//captura do pai
+				NoRB pai = n.getPai();
+				
 				n.setPai(null);
+				
+				//rebalaceamento da arvore
+				rebalanceTreeRemove(pai);
 			}
 		}
 		this.size -= 1;
@@ -553,7 +596,7 @@ public class ArvoreRB implements ArvoreRBInterface{
 			 *----------------------------------------*
 			 */
 	
-	public void attTreeInsert(NoRB no) {
+	private void attTreeInsert(NoRB no) {
 		if(this.isRoot(no) == true) {
 			no.setNegro();
 			return;
@@ -672,4 +715,195 @@ public class ArvoreRB implements ArvoreRBInterface{
 			}
 		}
 	}
+	
+	private void attTreeRemove(NoRB noRemoved, NoRB noRelocated) {
+		if(noRelocated != null) {
+			
+			/*
+			if(this.isRoot(noRelocated)) {
+				noRelocated.setNegro();
+				return;
+			}
+			*/
+			
+			if(noRelocated.getCorLetter() == 'n') {
+				if(noRelocated.isLeftChild()) {
+					noRelocated.getPai().setDuploNegro(-1);
+				}
+				else {
+					noRelocated.getPai().setDuploNegro(1);
+				}
+			}
+			
+			noRelocated.setCor(noRemoved.getCor());
+		}
+		else {
+			
+			if(noRemoved.getCorLetter() == 'n') {
+				if(noRemoved.isLeftChild()) {
+					noRemoved.getPai().setDuploNegro(-1);
+				}
+				else {
+					noRemoved.getPai().setDuploNegro(1);
+				}
+			}
+		}
+	}
+	
+	private void rebalanceTreeRemove(NoRB no) {
+		if(no == null) {
+			return;
+		}
+		
+		if(no.getDuploNegro() != 0) {
+			// duploNegro no filho da esquerda
+			if(no.getDuploNegro() == -1) {
+				
+				//filho esquerdo - n
+				if( ( no.getFilhoEsquerdo() != null && no.getFilhoEsquerdo().getCorLetter() == 'n' ) ||
+						no.getFilhoEsquerdo() == null ) {
+					
+					//filho direito - n
+					if( no.getFilhoDireito() != null && no.getFilhoDireito().getCorLetter() == 'n' ) {
+						
+						//caso 4
+						if( no.getFilhoDireito().getFilhoDireito() != null 
+								&& no.getFilhoDireito().getFilhoDireito().getCorLetter() == 'r' ) {
+							no.getFilhoDireito().setCor(no.getCor());
+							no.setCor(1);
+							no.getFilhoDireito().getFilhoDireito().setCor(1);
+							this.RSEsquerda(no);
+							no.setDuploNegro(0);
+						}
+						
+						//caso 3
+						else if(no.getFilhoDireito().getFilhoEsquerdo() != null 
+								&& no.getFilhoDireito().getFilhoEsquerdo().getCorLetter() == 'r'
+								&& (no.getFilhoDireito().getFilhoDireito() == null 
+									|| (no.getFilhoDireito().getFilhoDireito() != null 
+										&& no.getFilhoDireito().getFilhoDireito().getCorLetter() == 'n'))) {
+							no.getFilhoDireito().getFilhoEsquerdo().setCor(1);
+							no.getFilhoDireito().setCor(-1);
+							this.RSDireita(no.getFilhoDireito());
+						}
+						
+						//caso 2
+						else if( ( no.getFilhoDireito().getFilhoDireito() == null 
+								|| (no.getFilhoDireito().getFilhoDireito() != null 
+								&& no.getFilhoDireito().getFilhoDireito().getCorLetter() == 'n' ))
+							&& ( no.getFilhoDireito().getFilhoEsquerdo() == null 
+									|| (no.getFilhoDireito().getFilhoEsquerdo() != null 
+									&& no.getFilhoDireito().getFilhoEsquerdo().getCorLetter() == 'n' ))
+							) {
+							
+							//caso 2a
+							if(no.getCorLetter() == 'n') {
+								no.getFilhoDireito().setCor(-1);
+								no.setDuploNegro(0);
+								if(no.getPai() != null) {
+									if(no.isLeftChild()) {
+										no.getPai().setDuploNegro(-1);
+									}
+									else {
+										no.getPai().setDuploNegro(1);
+									}
+									//no = no.getPai();
+								}
+							}
+							//caso 2b
+							else {
+								no.getFilhoDireito().setCor(-1);
+								no.setDuploNegro(0);
+								no.setCor(1);
+								return;
+							}
+						}
+					}
+					else if( no.getFilhoDireito() != null && no.getFilhoDireito().getCorLetter() == 'r' ) {
+						//caso 1
+						no.setCor(-1);
+						no.getFilhoDireito().setCor(1);
+						this.RSEsquerda(no);
+					}
+				}
+			}
+			// duploNegro no filho da direta
+			else {
+				
+				// filho direito - n
+				if( ( no.getFilhoDireito() != null && no.getFilhoDireito().getCorLetter() == 'n' ) ||
+						no.getFilhoDireito() == null ) {
+					
+					// filho esquerdo - n
+					if( no.getFilhoEsquerdo() != null && no.getFilhoEsquerdo().getCorLetter() == 'n' ) {
+						
+						//caso 4
+						if( no.getFilhoEsquerdo().getFilhoEsquerdo() != null && 
+								no.getFilhoEsquerdo().getFilhoEsquerdo().getCorLetter() == 'r' ) {
+							no.getFilhoEsquerdo().setCor(no.getCor());
+							no.setCor(1);
+							no.getFilhoEsquerdo().getFilhoEsquerdo().setCor(1);
+							this.RSDireita(no);
+							no.setDuploNegro(0);
+						}
+						
+						//caso 3
+						else if(no.getFilhoEsquerdo().getFilhoDireito() != null 
+								&& no.getFilhoEsquerdo().getFilhoDireito().getCorLetter() == 'r'
+								&& (no.getFilhoEsquerdo().getFilhoEsquerdo() == null 
+									|| (no.getFilhoEsquerdo().getFilhoEsquerdo() != null 
+										&& no.getFilhoEsquerdo().getFilhoEsquerdo().getCorLetter() == 'n'))) {
+							no.getFilhoEsquerdo().getFilhoDireito().setCor(1);
+							no.getFilhoEsquerdo().setCor(-1);
+							this.RSEsquerda(no.getFilhoEsquerdo());
+						}
+						
+						//caso 2
+						else if( ( no.getFilhoEsquerdo().getFilhoEsquerdo() == null 
+								|| (no.getFilhoEsquerdo().getFilhoEsquerdo() != null 
+								&& no.getFilhoEsquerdo().getFilhoEsquerdo().getCorLetter() == 'n' ))
+							&& ( no.getFilhoEsquerdo().getFilhoDireito() == null 
+									|| (no.getFilhoEsquerdo().getFilhoDireito() != null 
+									&& no.getFilhoEsquerdo().getFilhoDireito().getCorLetter() == 'n' ))
+							) {
+							
+							//caso 2a
+							if(no.getCorLetter() == 'n') {
+								no.getFilhoEsquerdo().setCor(-1);
+								no.setDuploNegro(0);
+								if(no.getPai() != null) {
+									if(no.isLeftChild()) {
+										no.getPai().setDuploNegro(-1);
+									}
+									else {
+										no.getPai().setDuploNegro(1);
+									}
+									//no = no.getPai();
+								}
+							}
+							//caso 2b
+							else {
+								no.getFilhoEsquerdo().setCor(-1);
+								no.setDuploNegro(0);
+								no.setCor(1);
+								return;
+							}
+						}
+					
+					}
+					else if( no.getFilhoEsquerdo() != null && no.getFilhoEsquerdo().getCorLetter() == 'r' ) {
+						//caso 1
+						no.setCor(-1);
+						no.getFilhoEsquerdo().setCor(1);
+						this.RSDireita(no);
+					}
+				}
+			}
+			rebalanceTreeRemove(no);
+		}
+		else {
+			rebalanceTreeRemove(no.getPai());
+		}
+	}
+	
 }

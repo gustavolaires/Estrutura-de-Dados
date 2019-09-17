@@ -9,7 +9,10 @@ public class NoRB {
 	private int cor;
 		// -1 => rubro
 		//  1 => negro
-	private boolean duploNegro;
+	private int duploNegro;
+		// -1 => duploNegro filho esquerdo
+		//  0 => SEM DUPLO NEGRO
+		//  1 => duploNegro filho direito
 	
 	
 	// Construtores
@@ -19,7 +22,7 @@ public class NoRB {
 		this.filhoEsquerdo = null;
 		this.pai = null;
 		this.cor = -1;
-		this.duploNegro = false;
+		this.duploNegro = 0;
 	}
 	public NoRB(NoRB pai, Object elemento) {
 		this.elemento = elemento;
@@ -27,7 +30,7 @@ public class NoRB {
 		this.filhoEsquerdo = null;
 		this.pai = pai;
 		this.cor = -1;
-		this.duploNegro = false;
+		this.duploNegro = 0;
 	}
 	
 	// Metodos
@@ -76,10 +79,10 @@ public class NoRB {
 	public void setNegro() {
 		this.cor = 1;
 	}
-	public NoRB getDuploNegro() {
-		return pai;
+	public int getDuploNegro() {
+		return duploNegro;
 	}
-	public void setDuploNegro(boolean duploNegro) {
+	public void setDuploNegro(int duploNegro) {
 		this.duploNegro = duploNegro;
 	}
 	
