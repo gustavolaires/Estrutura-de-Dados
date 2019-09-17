@@ -34,12 +34,16 @@ public class main {
 					break;
 					
 				case "2": //remove Object
-					if(n != null) {
-						n = t.remove(n);
-						System.out.println("Valor "+ String.valueOf( n.getElemento()) + " removido!\n");
+					System.out.print("Informe um número: ");
+					obj = Integer.parseInt( sc.nextLine());
+					
+					n = t.search(obj);
+					if( n == null) {
+						System.out.println("Valor "+ String.valueOf(obj) + " nao encontrado!\n");
 					}
 					else {
-						System.out.println("No vazio! primeiro escolha um no da arvore\n");
+						n = t.remove(n);
+						System.out.println("Valor "+ String.valueOf( n.getElemento()) + " removido!\n");
 					}
 					break;
 					
