@@ -3,6 +3,9 @@ import java.util.List;
 
 import classes.Aresta;
 import classes.GrafoMA;
+import algoritmos.Algoritmos;
+import algoritmos.DFS;
+import algoritmos.BFS;
 
 
 public class main {
@@ -10,6 +13,7 @@ public class main {
 		Scanner sc = new Scanner(System.in);
 		
 		GrafoMA gf = new GrafoMA();
+		Algoritmos algo = new Algoritmos(gf);
 		
 		String op, a1, a2, v1, v2;
 		Aresta tmpAresta;
@@ -161,6 +165,48 @@ public class main {
 				case "15":	//("15 - Imprimir Grafo")
 					gf.printGrafo();
 					break;
+				
+				case "16":
+					if(algo.getGrafo() == null) {
+						System.out.println("\nNão há Grafo definido!\n");
+					}
+					else {
+						List<Object> verticesTemp = gf.vertices();
+						
+						System.out.println("\nEscolha um vertice:");
+						for(int i=0; i<verticesTemp.size(); i++) {
+							System.out.println("[" + String.valueOf(i) + "] - Vertice " +
+												String.valueOf(verticesTemp.get(i)));
+						}
+						System.out.print("Opcao: ");
+						int slct = sc.nextInt();
+						sc.nextLine();
+						
+						List<DFS> result = algo.AlgoritmoDFS(slct);
+						algo.printListDFS(result);
+					}
+					break;
+					
+				case "17":
+					if(algo.getGrafo() == null) {
+						System.out.println("\nNão há Grafo definido!\n");
+					}
+					else {
+						List<Object> verticesTemp = gf.vertices();
+						
+						System.out.println("\nEscolha um vertice:");
+						for(int i=0; i<verticesTemp.size(); i++) {
+							System.out.println("[" + String.valueOf(i) + "] - Vertice " +
+												String.valueOf(verticesTemp.get(i)));
+						}
+						System.out.print("Opcao: ");
+						int slct = sc.nextInt();
+						sc.nextLine();
+						
+						List<BFS> result = algo.AlgoritmoBFS(slct);
+						algo.printListBFS(result);
+					}
+					break;
 					
 				case "0":	//("0 - Sair")
 					loop = false;
@@ -192,6 +238,8 @@ public class main {
 		System.out.println("14 - Eh Direcionado");
 		System.out.println("-----------------------------");
 		System.out.println("15 - Imprimir Grafo");
+		System.out.println("16 - Busca em profundidade (DFS)");
+		System.out.println("17 - Busca em largura (BFS)");
 		System.out.println("0 - Sair");
 		System.out.print("\nOpcao: ");
 	}

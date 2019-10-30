@@ -282,6 +282,27 @@ public class GrafoMA {
 		return false;
 	}
 	
+	public List<Object> verticesAdjacentes(Object v){
+		// Busca vertice no grafo
+		int pos=0;
+		for(pos=0; pos<this.qtdVertice; pos++) {
+			if(this.vertice[pos] == v) break;
+		}
+		
+		// Vertice nao existe no grafo
+		if(pos == this.qtdVertice) return null;
+		
+		List<Object> adj = new ArrayList<Object>();
+		List<Aresta> arestaList = null;
+		
+		// Pega os vertices adjacentes
+		for(int j=0; j<this.qtdVertice; j++) {
+			arestaList = this.arestas[pos][j].getArrayList();
+			if(arestaList.size() > 0) adj.add(this.vertice[j]);
+		}
+		return adj;
+	}
+	
 	/*
 	 * METODOS PESSOAIS
 	 */
@@ -317,7 +338,7 @@ public class GrafoMA {
 	}
 	
 	/*
-	 * METODOS PIRVADOS
+	 * METODOS PRIVADOS
 	 */
 	
 	private void aumentarGrafo() {
